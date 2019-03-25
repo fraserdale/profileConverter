@@ -106,7 +106,7 @@ ipcMain.on('pd',function () {
             console.error(err);
             return;
         };
-        successMessage = 'Successfully created: ' + path.join(__dirname, 'profiles/'+fileName+'.json')
+        successMessage = 'Successfully created: <br>' + path.join(__dirname, 'profiles/'+fileName+'.json')
         console.log(successMessage)
         mainWindow.webContents.send('output', successMessage);
     });
@@ -115,7 +115,7 @@ ipcMain.on('pd',function () {
 ipcMain.on('dashe',function() {
     console.log('Converting profile for Project Destroyer')
     const config = require('./config.json');
-    fileName = 'pd-' + config['fname'] + config['sname'] + '-rnd'
+    fileName = 'dashe-' + config['fname'] + config['sname'] + '-rnd'
     console.log(fileName)
     returnConfig = {
         profile_name:{
@@ -153,7 +153,66 @@ ipcMain.on('dashe',function() {
             }
         }
     }
+    console.log('converted to correct format')
+    fs.writeFile('profiles/'+fileName + '.json', JSON.stringify(returnConfig),'utf8', (err)=>{
+        if (err) {
+            console.error(err);
+            return;
+        };
+        successMessage = 'Successfully created: <br>' + path.join(__dirname, 'profiles/'+fileName+'.json')
+        console.log(successMessage)
+        mainWindow.webContents.send('output', successMessage);
+    });
+
 })
+
+ipcMain.on('phantom',function () {
+    console.log('Converting profile for Phantom')
+    const config = require('./config.json');
+    fileName = 'phantom-' + config['fname'] + config['sname'] + '-rnd'
+    console.log(fileName)
+    returnConfig = [{
+        "Billing": {
+            "Address": config['b_addy'],
+            "Apt": config['b_apt'],
+            "City": config['b_city'],
+            "FirstName": config['b_fname'],
+            "LastName": config['b_sname'],
+            "State": config['b_state'],
+            "Zipcode": config['b_zip']
+        },
+        "CCNumber": config['cnum'],
+        "CVV": config['csv'],
+        "CardType": config['ctype'],
+        "Country":config['country'],
+        "Email": config['email'],
+        "ExpMonth": config['month'],
+        "ExpYear": "20" + config['year'],
+        "Name": config['fname'] + ' ' + config['sname'],
+        "Phone": config['phone'],
+        "Same": config['billingequalshipping'],
+        "Shipping":{
+            "Address": config['addy'],
+            "Apt": config['apt'],
+            "City": config['city'],
+            "FirstName": config['fname'],
+            "LastName": config['sname'],
+            "State": config['state'],
+            "Zipcode": config['zip']
+        }
+       
+    }]
+    console.log('converted to correct format')
+    fs.writeFile('profiles/'+fileName + '.json', JSON.stringify(returnConfig),'utf8', (err)=>{
+        if (err) {
+            console.error(err);
+            return;
+        };
+        successMessage = 'Successfully created: <br>' + path.join(__dirname, 'profiles/'+fileName+'.json')
+        console.log(successMessage)
+        mainWindow.webContents.send('output', successMessage);
+    });
+});
 
 
 

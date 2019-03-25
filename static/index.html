@@ -318,11 +318,11 @@
                 </div>
                 <div>
                     <label>
-                        <input type="checkbox" id='billingequalshipping' onclick="toggleBilling()">
+                        <input type="checkbox" id='billingequalshipping' onclick="toggleBilling()" checked>
                         <span>Billing address = Shipping Address</span>
                     </label>
                 </div>
-                <div id='billing'>
+                <div id='billing' style='display: none'>
                     <h3 style='width:100%; float:right'>Billing Information</h3>
                     <div class="input-field" style='float: left; width: 47%;margin-left: 1%'>
                         <label>Forename</label>
@@ -679,7 +679,7 @@
         </div>
         <div id='converter' style='display: none'>
             <div class="input-field">
-                <a class="waves-effect waves-light btn red darken-1" onclick="pd()">Edit Profile</a>
+                <a class="waves-effect waves-light btn" onclick="backToProfiles()">Edit Profile</a>
             </div>
             <div id='col1'>
                 <div class="input-field">
@@ -689,27 +689,28 @@
                     <a class="waves-effect waves-light btn green accent-3">Cybersole</a>
                 </div>
                 <div class="input-field">
-                    <a class="waves-effect waves-light btn blue darken-3">EVE</a>
+                    <a class="waves-effect waves-light btn blue darken-1">Task Bot</a>
                 </div>
                 <div class="input-field">
                     <a class="waves-effect waves-light btn  pink lighten-3">Ghost</a>
                 </div>
                 <div class="input-field">
-                    <a class="waves-effect waves-light btn blue darken-1">Task Bot</a>
+                    <a class="waves-effect waves-light btn blue darken-3">EVE</a>
                 </div>
+                
             </div>
             <div id='col2'>
-                <div class="input-field">
-                    <a class="waves-effect waves-light btn blue darken-1">Dashe</a>
-                </div>
-                <div class="input-field">
-                    <a class="waves-effect waves-light btn grey darken-4">Phantom</a>
-                </div>
                 <div class="input-field">
                     <a class="waves-effect waves-light btn deep-purple darken-1">The KickStation</a>
                 </div>
                 <div class="input-field">
                     <a class="waves-effect waves-light btn grey darken-4 pink-text text-accent-3">Nike Shoe Bot</a>
+                </div>
+                <div class="input-field">
+                    <a class="waves-effect waves-light btn grey darken-4">Phantom</a>
+                </div>
+                <div class="input-field">
+                    <a class="waves-effect waves-light btn blue darken-1">Dashe</a>
                 </div>
                 <div class="input-field">
                     <a class="waves-effect waves-light btn red darken-1" onclick="anb()">ANB</a>

@@ -1,0 +1,30 @@
+[{
+    "Billing": {
+        "Address": "asddsasad",
+        "Apt": "saddsa",
+        "City": "sadsad",
+        "FirstName": "fraser",
+        "LastName": "adsasd",
+        "State": null,
+        "Zip": "dsasad"
+    },
+    "CCNumber": "4444555544445555",
+    "CVV": "234",
+    "CardType": "visa",
+    "Country": "GB",
+    "Email": "f22r843@fraser.site",
+    "ExpMonth": "02",
+    "ExpYear": "2023",
+    "Name": "sad",
+    "Phone": "412",
+    "Same": true,
+    "Shipping": {
+        "Address": "asddsasad",
+        "Apt": "saddsa",
+        "City": "sadsad",
+        "FirstName": "fraser",
+        "LastName": "adsasd",
+        "State": null,
+        "Zip": "dsasad"
+    }
+}]
