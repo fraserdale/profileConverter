@@ -1,0 +1,26 @@
+{
+  "name": "profile-converter",
+  "version": "1.0.0",
+  "update": "",
+  "description": "Profile converter for sneaker bots.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fraserdale/profileConverter.git"
+  },
+  "author": "jalfrazi aka https://github.com/fraserdale/profileConverter",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fraserdale/profileConverter/issues"
+  },
+  "homepage": "https://github.com/fraserdale/profileConverter#readme",
+  "dependencies": {
+    "electron": "^3.0.3"
+  },
+  "devDependencies": {
+    "electron-rebuild": "^1.8.2"
+  }
+}

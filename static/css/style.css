@@ -1,0 +1,42 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center
+}
+.button{
+    border: 1px solid black;
+    padding: 5px;
+    display:inline-block;
+    cursor: hand
+}
+input[text]{
+    width: 250px;
+}
+
+.input-field{
+    width:250px;
+    margin: 0 auto;
+}
+
+#settings{
+    width: 40%;
+    margin-left:10%;
+    float: left
+}
+
+#main{
+    width: 40%;
+    margin-right:10%;
+    float: right
+}
+
+#col1{
+    width: 40%;
+    margin-left:10%;
+    float: left
+}
+
+#col2{
+    width: 40%;
+    margin-right:10%;
+    float: right
+}
