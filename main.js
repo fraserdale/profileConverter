@@ -63,31 +63,10 @@ ipcMain.on('configSave', function (e, config) {
 ipcMain.on('pd',function () {
     console.log('Converting profile for Project Destroyer')
     const config = require('./config.json');
-    fileName = 'pd-' + config['fname'] + config['sname'] + '-rnd'
+    fileName = 'pd-' + config['fname'] + config['sname'] +'-'+ Math.random().toString(36).substring(2, 6)
     console.log(fileName)
     returnConfig = [{
         "billing": {
-            "address1": config['addy'],
-            "address2": config['apt'],
-            "city": config['city'],
-            "country": config['country'],
-            "firstName": config['fname'],
-            "lastName": config['sname'],
-            "phone": config['phone'],
-            "state": config['state'],
-            "zipcode": config['zip']
-        },
-        "card": {
-            "code": config['csv'],
-            "expire": config['month'] + ' / ' + config['year'],
-            "name": config['fname'] + ' ' + config['sname'],
-            "number": config['cnum']
-        },
-        "email": config['email'],
-        "id": 'NEED TO LOOKUP LOL',
-        "limit": true,
-        "match": config['billingequalshipping'],
-        "shipping": {
             "address1": config['b_addy'],
             "address2": config['b_apt'],
             "city": config['b_city'],
@@ -97,6 +76,27 @@ ipcMain.on('pd',function () {
             "phone": config['phone'],
             "state": config['b_state'],
             "zipcode": config['b_zip']
+        },
+        "card": {
+            "code": config['csv'],
+            "expire": config['month'] + ' / ' + config['year'],
+            "name": config['fname'] + ' ' + config['sname'],
+            "number": config['cnum']
+        },
+        "email": config['email'],
+        "id": Math.random().toString(36).substring(2, 10),
+        "limit": true,
+        "match": config['billingequalshipping'],
+        "shipping": {
+            "address1": config['addy'],
+            "address2": config['apt'],
+            "city": config['city'],
+            "country": config['country'],
+            "firstName": config['fname'],
+            "lastName": config['sname'],
+            "phone": config['phone'],
+            "state": config['state'],
+            "zipcode": config['zip']
         },
         "title": fileName
     }]
@@ -115,10 +115,10 @@ ipcMain.on('pd',function () {
 ipcMain.on('dashe',function() {
     console.log('Converting profile for Project Destroyer')
     const config = require('./config.json');
-    fileName = 'dashe-' + config['fname'] + config['sname'] + '-rnd'
+    fileName = 'dashe-' + config['fname'] + config['sname'] +'-'+ Math.random().toString(36).substring(2, 6)
     console.log(fileName)
     returnConfig = {
-        profile_name:{
+        fileName:{
             "billing": {
                 "address1": config['addy'],
                 "address2": config['apt'],
@@ -138,8 +138,8 @@ ipcMain.on('dashe',function() {
                 "number": config['cnum'],
                 "year":'20'+config['year']
             },
-            "email": email,
-            "profileName":profile_name,
+            "email": config['email'],
+            "profileName":fileName,
             "shipping": {
                 "address": config['addy'],
                 "apt": config['apt'],
@@ -169,7 +169,7 @@ ipcMain.on('dashe',function() {
 ipcMain.on('phantom',function () {
     console.log('Converting profile for Phantom')
     const config = require('./config.json');
-    fileName = 'phantom-' + config['fname'] + config['sname'] + '-rnd'
+    fileName = 'phantom-' + config['fname'] + config['sname'] +'-'+ Math.random().toString(36).substring(2, 6)
     console.log(fileName)
     returnConfig = [{
         "Billing": {
@@ -202,6 +202,53 @@ ipcMain.on('phantom',function () {
         }
        
     }]
+    console.log('converted to correct format')
+    fs.writeFile('profiles/'+fileName + '.json', JSON.stringify(returnConfig),'utf8', (err)=>{
+        if (err) {
+            console.error(err);
+            return;
+        };
+        successMessage = 'Successfully created: <br>' + path.join(__dirname, 'profiles/'+fileName+'.json')
+        console.log(successMessage)
+        mainWindow.webContents.send('output', successMessage);
+    });
+});
+
+
+ipcMain.on('ghost',function () {
+    console.log('Converting profile for Ghost')
+    const config = require('./config.json');
+    fileName = 'ghost-' + config['fname'] + config['sname'] +'-'+ Math.random().toString(36).substring(2, 6)
+    console.log(fileName)
+    returnConfig = {
+        "CCNumber": config['cnum'],
+        "CVV": config['csv'],
+        "ExpMonth": config['month'],
+        "ExpYear": "20" + config['year'],
+        "CardType":config['type'],
+        "Same": config['billingequalshipping'],
+        "Shipping":{
+            "FirstName": config['fname'],
+            "LastName": config['sname'],
+            "Address": config['addy'],
+            "Apt": config['apt'],
+            "City": config['city'],
+            "State": config['state'],
+            "Zip": config['zip']
+        },
+        "Billing":{
+            "FirstName": config['b_fname'],
+            "LastName": config['b_sname'],
+            "Address": config['b_addy'],
+            "Apt": config['b_apt'],
+            "City": config['b_city'],
+            "State": config['b_state'],
+            "Zip": config['b_zip']
+        },                
+        "Phone": config['phone'],
+        "Name": config['fname'] + ' ' + config['sname'],
+        "Country":config['country']
+    }
     console.log('converted to correct format')
     fs.writeFile('profiles/'+fileName + '.json', JSON.stringify(returnConfig),'utf8', (err)=>{
         if (err) {

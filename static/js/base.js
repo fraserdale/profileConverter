@@ -1,18 +1,36 @@
-/* (function () {
+(function () {
   const config = require('../config.json')
-  document.getElementById('server').value = config.server
-  document.getElementById('private').value = config.privateChannel
-  document.getElementById('public').value = config.publicChannel
-  document.getElementById('bot').value = config.botToken
-  document.getElementById('quantityCart').value = config.quantityCart
-  document.getElementById('cooldown').value = config.cooldown
-  if (config.deleteAfterReact) {
-    document.getElementById('deleteAfterReact').checked = true
+  document.getElementById('fname').value = config.fname
+  document.getElementById('sname').value = config.sname
+  document.getElementById('addy').value = config.addy
+  document.getElementById('apt').value = config.apt
+  document.getElementById('city').value = config.city
+  document.getElementById('country').value = config.country
+  document.getElementById('state').value = config.state
+  document.getElementById('zip').value = config.zip
+  document.getElementById('email').value = config.email
+  document.getElementById('phone').value = config.phone
+  if (config.billingequalshipping) {
+    document.getElementById('billingequalshipping').checked = true
+    toggleBilling()
+  }else{
+    document.getElementById('b_fname').value = config.b_fname
+    document.getElementById('b_sname').value = config.b_sname
+    document.getElementById('b_addy').value = config.b_addy
+    document.getElementById('b_apt').value = config.b_apt
+    document.getElementById('b_city').value = config.b_city
+    document.getElementById('b_country').value = config.b_country
+    document.getElementById('b_state').value = config.b_state
+    document.getElementById('b_zip').value = config.b_zip
   }
-  if (config.after10){
-    document.getElementById('after10').checked =true
-  }
-})(); */
+  document.getElementById('cnum').value = config.cnum
+  document.getElementById('cvv').value = config.cvv
+  document.getElementById('month').value = config.month
+  document.getElementById('year').value = config.year
+  document.getElementById('type').value = config.type  
+})();
+
+
 const electron = require('electron');
 const {
   ipcRenderer
@@ -91,9 +109,10 @@ function save() {
   const month = document.getElementById('month').value 
   const year = document.getElementById('year').value 
   const cvv = document.getElementById('cvv').value 
-  config = `{"fname":"${fname}","sname":"${sname}","addy":"${addy}","apt":"${apt}","city":"${city}","country":"${country}","state":"${state}","zip":"${zip}","email":"${email}","phone":"${phone}","billingequalshipping":${billingequalshipping},
-  "cnum":"${cnum}","month":"${month}","year":"${year}","cvv":"${cvv}"}`
-  if (!billingequalshipping){
+  const type = document.getElementById('type').value
+  //config = `{"fname":"${fname}","sname":"${sname}","addy":"${addy}","apt":"${apt}","city":"${city}","country":"${country}","state":"${state}","zip":"${zip}","email":"${email}","phone":"${phone}","billingequalshipping":${billingequalshipping},
+  //"cnum":"${cnum}","month":"${month}","year":"${year}","cvv":"${cvv}","type":"${type}"}`
+  //if (!billingequalshipping){
     const b_addy = document.getElementById('b_addy').value;
     const b_apt = document.getElementById('b_apt').value;
     const b_city = document.getElementById('b_city').value;
@@ -101,10 +120,10 @@ function save() {
     const b_state = document.getElementById('b_state').value
     const b_zip = document.getElementById('b_zip').value
     config = `{"fname":"${fname}","sname":"${sname}","addy":"${addy}","apt":"${apt}","city":"${city}","country":"${country}","state":"${state}","zip":"${zip}","email":"${email}","phone":"${phone}","billingequalshipping":${billingequalshipping},
-      "cnum":"${cnum}","month":"${month}","year":"${year}","cvv":"${cvv}",
+      "cnum":"${cnum}","month":"${month}","year":"${year}","cvv":"${cvv}","type":"${type}",
       "b_addy":"${b_addy}","b_apt":"${b_apt}","b_city":"${b_city}","b_country":"${b_country}","b_state":"${b_state}","b_zip":"${b_zip}"
     }`
-  }
+  //}
   console.log(config)
   ipcRenderer.send('configSave', config);
 }
@@ -136,6 +155,21 @@ function next_page(){
 function pd() {
   //save()
   ipcRenderer.send('pd');
+}
+
+function dashe() {
+  //save()
+  ipcRenderer.send('dashe');
+}
+
+function phantom() {
+  //save()
+  ipcRenderer.send('phantom');
+}
+
+function ghost() {
+  //save()
+  ipcRenderer.send('ghost');
 }
 
 /* function start() {
