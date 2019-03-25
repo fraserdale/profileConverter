@@ -12,6 +12,10 @@ input[text]{
     width: 250px;
 }
 
+.selectCorrect{
+    margin-bottom: 9px
+}
+
 .input-field{
     width:250px;
     margin: 0 auto;
