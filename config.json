@@ -1,4 +1,26 @@
-{"fname":"john","sname":"smith","addy":"123 road","apt":"suite 2","city":"london","country":"GB","state":"","zip":"LN00 0AA","email":"test@domain.com","phone":"07777777777","billingequalshipping":true,
-      "cnum":"4444555544445555","month":"03","year":"20","cvv":"123","type":"visa",
-      "b_addy":"","b_apt":"","b_city":"","b_country":"Country","b_state":"","b_zip":""
-    }
+{
+  "fname": "john",
+  "sname": "smith",
+  "addy": "123 road",
+  "apt": "suite 2",
+  "city": "london",
+  "country": "GB",
+  "state": "",
+  "zip": "LN00 0AA",
+  "email": "test@domain.com",
+  "phone": "07777777777",
+  "billingequalshipping": true,
+  "cnum": "4444 5555 4444 5555",
+  "month": "03",
+  "year": "20",
+  "cvv": "123",
+  "type": "visa",
+  "b_fname": "john",
+  "b_sname": "smith",
+  "b_addy": "123 road",
+  "b_apt": "suite 2",
+  "b_city": "london",
+  "b_country": "GB",
+  "b_state": "",
+  "b_zip": "LN00 0AA"
+}

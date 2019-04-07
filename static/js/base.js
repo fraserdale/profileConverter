@@ -105,7 +105,7 @@ function save() {
   const email = document.getElementById('email').value
   const phone = document.getElementById('phone').value
   const billingequalshipping = document.getElementById('billingequalshipping').checked
-  const cnum = document.getElementById('cnum').value 
+  const cnum = ((document.getElementById('cnum').value).match(/.{1,4}/g)).join(' ')
   const month = document.getElementById('month').value 
   const year = document.getElementById('year').value 
   const cvv = document.getElementById('cvv').value 
@@ -113,16 +113,22 @@ function save() {
   //config = `{"fname":"${fname}","sname":"${sname}","addy":"${addy}","apt":"${apt}","city":"${city}","country":"${country}","state":"${state}","zip":"${zip}","email":"${email}","phone":"${phone}","billingequalshipping":${billingequalshipping},
   //"cnum":"${cnum}","month":"${month}","year":"${year}","cvv":"${cvv}","type":"${type}"}`
   //if (!billingequalshipping){
-    const b_addy = document.getElementById('b_addy').value;
-    const b_apt = document.getElementById('b_apt').value;
-    const b_city = document.getElementById('b_city').value;
-    const b_country = document.getElementById('b_country').value
-    const b_state = document.getElementById('b_state').value
-    const b_zip = document.getElementById('b_zip').value
+  const b_addy = document.getElementById('b_addy').value;
+  const b_apt = document.getElementById('b_apt').value;
+  const b_city = document.getElementById('b_city').value;
+  const b_country = document.getElementById('b_country').value
+  const b_state = document.getElementById('b_state').value
+  const b_zip = document.getElementById('b_zip').value
+  config = `{"fname":"${fname}","sname":"${sname}","addy":"${addy}","apt":"${apt}","city":"${city}","country":"${country}","state":"${state}","zip":"${zip}","email":"${email}","phone":"${phone}","billingequalshipping":${billingequalshipping},
+    "cnum":"${cnum}","month":"${month}","year":"${year}","cvv":"${cvv}","type":"${type}",
+    "b_fname":"${b_fname}","b_sname":"${b_sname}","b_addy":"${b_addy}","b_apt":"${b_apt}","b_city":"${b_city}","b_country":"${b_country}","b_state":"${b_state}","b_zip":"${b_zip}"
+  }`
+  if(billingequalshipping){
     config = `{"fname":"${fname}","sname":"${sname}","addy":"${addy}","apt":"${apt}","city":"${city}","country":"${country}","state":"${state}","zip":"${zip}","email":"${email}","phone":"${phone}","billingequalshipping":${billingequalshipping},
-      "cnum":"${cnum}","month":"${month}","year":"${year}","cvv":"${cvv}","type":"${type}",
-      "b_addy":"${b_addy}","b_apt":"${b_apt}","b_city":"${b_city}","b_country":"${b_country}","b_state":"${b_state}","b_zip":"${b_zip}"
-    }`
+    "cnum":"${cnum}","month":"${month}","year":"${year}","cvv":"${cvv}","type":"${type}",
+    "b_fname":"${fname}","b_sname":"${sname}","b_addy":"${addy}","b_apt":"${apt}","b_city":"${city}","b_country":"${country}","b_state":"${state}","b_zip":"${zip}"
+  }`
+  }
   //}
   console.log(config)
   ipcRenderer.send('configSave', config);
@@ -153,24 +159,33 @@ function next_page(){
 }
 
 function pd() {
-  //save()
   ipcRenderer.send('pd');
 }
 
 function dashe() {
-  //save()
   ipcRenderer.send('dashe');
 }
 
 function phantom() {
-  //save()
   ipcRenderer.send('phantom');
 }
 
 function ghost() {
-  //save()
   ipcRenderer.send('ghost');
 }
+
+function cyber() {
+  ipcRenderer.send('cyber');
+}
+
+function eve() {
+  ipcRenderer.send('eve');
+}
+
+function hastey() {
+  ipcRenderer.send('hastey');
+}
+
 
 /* function start() {
   //save()

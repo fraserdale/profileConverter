@@ -21,6 +21,263 @@ const {
 let mainWindow;
 
 
+parseString = require("xml2js").parseString,
+    xml2js = require("xml2js");
+
+
+let short2long = {
+    "AF": "Afghanistan",
+    "AX": "Aland Islands",
+    "AL": "Albania",
+    "DZ": "Algeria",
+    "AS": "American Samoa",
+    "AD": "Andorra",
+    "AO": "Angola",
+    "AI": "Anguilla",
+    "AQ": "Antarctica",
+    "AG": "Antigua and Barbuda",
+    "AR": "Argentina",
+    "AM": "Armenia",
+    "AW": "Aruba",
+    "AU": "Australia",
+    "AT": "Austria",
+    "AZ": "Azerbaijan",
+    "BS": "Bahamas",
+    "BH": "Bahrain",
+    "BD": "Bangladesh",
+    "BB": "Barbados",
+    "BY": "Belarus",
+    "BE": "Belgium",
+    "BZ": "Belize",
+    "BJ": "Benin",
+    "BM": "Bermuda",
+    "BT": "Bhutan",
+    "BO": "Bolivia, Plurinational State of",
+    "BQ": "Bonaire, Sint Eustatius and Saba",
+    "BA": "Bosnia and Herzegovina",
+    "BW": "Botswana",
+    "BV": "Bouvet Island",
+    "BR": "Brazil",
+    "IO": "British Indian Ocean Territory",
+    "BN": "Brunei Darussalam",
+    "BG": "Bulgaria",
+    "BF": "Burkina Faso",
+    "BI": "Burundi",
+    "KH": "Cambodia",
+    "CM": "Cameroon",
+    "CA": "Canada",
+    "CV": "Cape Verde",
+    "KY": "Cayman Islands",
+    "CF": "Central African Republic",
+    "TD": "Chad",
+    "CL": "Chile",
+    "CN": "China",
+    "CX": "Christmas Island",
+    "CC": "Cocos (Keeling) Islands",
+    "CO": "Colombia",
+    "KM": "Comoros",
+    "CG": "Congo",
+    "CD": "Congo, The Democratic Republic of the",
+    "CK": "Cook Islands",
+    "CR": "Costa Rica",
+    "CI": "Côte d'Ivoire",
+    "HR": "Croatia",
+    "CU": "Cuba",
+    "CW": "Curaçao",
+    "CY": "Cyprus",
+    "CZ": "Czech Republic",
+    "DK": "Denmark",
+    "DJ": "Djibouti",
+    "DM": "Dominica",
+    "DO": "Dominican Republic",
+    "EC": "Ecuador",
+    "EG": "Egypt",
+    "SV": "El Salvador",
+    "GQ": "Equatorial Guinea",
+    "ER": "Eritrea",
+    "EE": "Estonia",
+    "ET": "Ethiopia",
+    "FK": "Falkland Islands (Malvinas)",
+    "FO": "Faroe Islands",
+    "FJ": "Fiji",
+    "FI": "Finland",
+    "FR": "France",
+    "GF": "French Guiana",
+    "PF": "French Polynesia",
+    "TF": "French Southern Territories",
+    "GA": "Gabon",
+    "GM": "Gambia",
+    "GE": "Georgia",
+    "DE": "Germany",
+    "GH": "Ghana",
+    "GI": "Gibraltar",
+    "GR": "Greece",
+    "GL": "Greenland",
+    "GD": "Grenada",
+    "GP": "Guadeloupe",
+    "GU": "Guam",
+    "GT": "Guatemala",
+    "GG": "Guernsey",
+    "GN": "Guinea",
+    "GW": "Guinea-Bissau",
+    "GY": "Guyana",
+    "HT": "Haiti",
+    "HM": "Heard Island and McDonald Islands",
+    "VA": "Holy See (Vatican City State)",
+    "HN": "Honduras",
+    "HK": "Hong Kong",
+    "HU": "Hungary",
+    "IS": "Iceland",
+    "IN": "India",
+    "ID": "Indonesia",
+    "IR": "Iran, Islamic Republic of",
+    "IQ": "Iraq",
+    "IE": "Ireland",
+    "IM": "Isle of Man",
+    "IL": "Israel",
+    "IT": "Italy",
+    "JM": "Jamaica",
+    "JP": "Japan",
+    "JE": "Jersey",
+    "JO": "Jordan",
+    "KZ": "Kazakhstan",
+    "KE": "Kenya",
+    "KI": "Kiribati",
+    "KP": "Korea, Democratic People's Republic of",
+    "KR": "Korea, Republic of",
+    "KW": "Kuwait",
+    "KG": "Kyrgyzstan",
+    "LA": "Lao People's Democratic Republic",
+    "LV": "Latvia",
+    "LB": "Lebanon",
+    "LS": "Lesotho",
+    "LR": "Liberia",
+    "LY": "Libya",
+    "LI": "Liechtenstein",
+    "LT": "Lithuania",
+    "LU": "Luxembourg",
+    "MO": "Macao",
+    "MK": "Macedonia, Republic of",
+    "MG": "Madagascar",
+    "MW": "Malawi",
+    "MY": "Malaysia",
+    "MV": "Maldives",
+    "ML": "Mali",
+    "MT": "Malta",
+    "MH": "Marshall Islands",
+    "MQ": "Martinique",
+    "MR": "Mauritania",
+    "MU": "Mauritius",
+    "YT": "Mayotte",
+    "MX": "Mexico",
+    "FM": "Micronesia, Federated States of",
+    "MD": "Moldova, Republic of",
+    "MC": "Monaco",
+    "MN": "Mongolia",
+    "ME": "Montenegro",
+    "MS": "Montserrat",
+    "MA": "Morocco",
+    "MZ": "Mozambique",
+    "MM": "Myanmar",
+    "NA": "Namibia",
+    "NR": "Nauru",
+    "NP": "Nepal",
+    "NL": "Netherlands",
+    "NC": "New Caledonia",
+    "NZ": "New Zealand",
+    "NI": "Nicaragua",
+    "NE": "Niger",
+    "NG": "Nigeria",
+    "NU": "Niue",
+    "NF": "Norfolk Island",
+    "MP": "Northern Mariana Islands",
+    "NO": "Norway",
+    "OM": "Oman",
+    "PK": "Pakistan",
+    "PW": "Palau",
+    "PS": "Palestinian Territory, Occupied",
+    "PA": "Panama",
+    "PG": "Papua New Guinea",
+    "PY": "Paraguay",
+    "PE": "Peru",
+    "PH": "Philippines",
+    "PN": "Pitcairn",
+    "PL": "Poland",
+    "PT": "Portugal",
+    "PR": "Puerto Rico",
+    "QA": "Qatar",
+    "RE": "Réunion",
+    "RO": "Romania",
+    "RU": "Russian Federation",
+    "RW": "Rwanda",
+    "BL": "Saint Barthélemy",
+    "SH": "Saint Helena, Ascension and Tristan da Cunha",
+    "KN": "Saint Kitts and Nevis",
+    "LC": "Saint Lucia",
+    "MF": "Saint Martin (French part)",
+    "PM": "Saint Pierre and Miquelon",
+    "VC": "Saint Vincent and the Grenadines",
+    "WS": "Samoa",
+    "SM": "San Marino",
+    "ST": "Sao Tome and Principe",
+    "SA": "Saudi Arabia",
+    "SN": "Senegal",
+    "RS": "Serbia",
+    "SC": "Seychelles",
+    "SL": "Sierra Leone",
+    "SG": "Singapore",
+    "SX": "Sint Maarten (Dutch part)",
+    "SK": "Slovakia",
+    "SI": "Slovenia",
+    "SB": "Solomon Islands",
+    "SO": "Somalia",
+    "ZA": "South Africa",
+    "GS": "South Georgia and the South Sandwich Islands",
+    "ES": "Spain",
+    "LK": "Sri Lanka",
+    "SD": "Sudan",
+    "SR": "Suriname",
+    "SS": "South Sudan",
+    "SJ": "Svalbard and Jan Mayen",
+    "SZ": "Swaziland",
+    "SE": "Sweden",
+    "CH": "Switzerland",
+    "SY": "Syrian Arab Republic",
+    "TW": "Taiwan, Province of China",
+    "TJ": "Tajikistan",
+    "TZ": "Tanzania, United Republic of",
+    "TH": "Thailand",
+    "TL": "Timor-Leste",
+    "TG": "Togo",
+    "TK": "Tokelau",
+    "TO": "Tonga",
+    "TT": "Trinidad and Tobago",
+    "TN": "Tunisia",
+    "TR": "Turkey",
+    "TM": "Turkmenistan",
+    "TC": "Turks and Caicos Islands",
+    "TV": "Tuvalu",
+    "UG": "Uganda",
+    "UA": "Ukraine",
+    "AE": "United Arab Emirates",
+    "GB": "United Kingdom",
+    "US": "United States",
+    "UM": "United States Minor Outlying Islands",
+    "UY": "Uruguay",
+    "UZ": "Uzbekistan",
+    "VU": "Vanuatu",
+    "VE": "Venezuela, Bolivarian Republic of",
+    "VN": "Viet Nam",
+    "VG": "Virgin Islands, British",
+    "VI": "Virgin Islands, U.S.",
+    "WF": "Wallis and Futuna",
+    "EH": "Western Sahara",
+    "YE": "Yemen",
+    "ZM": "Zambia",
+    "ZW": "Zimbabwe"
+}
+
+
 // Listen for app to be ready
 app.on('ready', function () {
     //create new window
@@ -44,9 +301,9 @@ app.on('ready', function () {
 });
 
 
-function readConfig(){
+function readConfig() {
     const config = require('./config.json');
-    return 
+    return
 }
 
 //catch save
@@ -60,10 +317,10 @@ ipcMain.on('configSave', function (e, config) {
     console.log(config)
 });
 
-ipcMain.on('pd',function () {
+ipcMain.on('pd', function () {
     console.log('Converting profile for Project Destroyer')
     const config = require('./config.json');
-    fileName = 'pd-' + config['fname'] + config['sname'] +'-'+ Math.random().toString(36).substring(2, 6)
+    fileName = 'pd-' + config['fname'] + config['sname'] + '-' + Math.random().toString(36).substring(2, 6)
     console.log(fileName)
     returnConfig = [{
         "billing": {
@@ -101,45 +358,287 @@ ipcMain.on('pd',function () {
         "title": fileName
     }]
     console.log('converted to correct format')
-    fs.writeFile('profiles/'+fileName + '.json', JSON.stringify(returnConfig),'utf8', (err)=>{
+    fs.writeFile('profiles/' + fileName + '.json', JSON.stringify(returnConfig), 'utf8', (err) => {
         if (err) {
             console.error(err);
             return;
         };
-        successMessage = 'Successfully created: <br>' + path.join(__dirname, 'profiles/'+fileName+'.json')
+        successMessage = 'Successfully created: <br>' + path.join(__dirname, 'profiles/' + fileName + '.json')
         console.log(successMessage)
         mainWindow.webContents.send('output', successMessage);
     });
 });
 
-ipcMain.on('dashe',function() {
-    console.log('Converting profile for Project Destroyer')
+
+
+ipcMain.on('hastey', function () {
+    console.log('Converting profile for Hastey Supreme')
     const config = require('./config.json');
-    fileName = 'dashe-' + config['fname'] + config['sname'] +'-'+ Math.random().toString(36).substring(2, 6)
+    fileName = 'hastey-' + config['fname'] + config['sname'] + '-' + Math.random().toString(36).substring(2, 6)
     console.log(fileName)
+    if (config['b_country'] == 'US'){
+        country = 'USA'
+        state = ['b_state']
+    }else if(config['b_country'] == 'CA'){
+        country = 'CANADA'
+        state = ['b_state']
+    }else if(config['b_country'] == 'JP'){
+        country = 'JAPAN'
+        state = ['b_state']
+    }else{
+        country = 'EUROPE'
+        state = config['b_country']
+    }
+    returnConfig = [{
+        "__profile__name":fileName,
+        "address": config['b_addy'],
+        "address_2": config['b_apt'],
+        "cardType":config['type'],
+        "cc_cvv": config['cvv'],
+        "cc_month": config['month'],
+        "cc_number": config['cnum'],
+        "cc_year": "20"+ config['year'],
+        "city": config['b_city'],
+        "country":country,
+        "email":config['email'],
+        "id": Math.random().toString(36).substring(2, 10) + '-' + Math.random().toString(36).substring(2, 6) + '-'+Math.random().toString(36).substring(2, 6)+'-'+Math.random().toString(36).substring(2, 6)+'-'+Math.random().toString(36).substring(2, 14),
+        "name": config['b_fname'] + ' ' + config['b_sname'],
+        "state": state,
+        "tel": config['phone'],
+        "zip":config['b_zip']
+    }]
+    console.log('converted to correct format')
+    fs.writeFile('profiles/' + fileName + '.json', JSON.stringify(returnConfig), 'utf8', (err) => {
+        if (err) {
+            console.error(err);
+            return;
+        };
+        successMessage = 'Successfully created: <br>' + path.join(__dirname, 'profiles/' + fileName + '.json')
+        console.log(successMessage)
+        mainWindow.webContents.send('output', successMessage);
+    });
+});
+
+
+
+
+ipcMain.on('cyber', function () {
+    console.log('Converting profile for CyberAIO')
+    const config = require('./config.json');
+    fileName = 'cyber-' + config['fname'] + config['sname'] + '-' + Math.random().toString(36).substring(2, 6)
+    console.log(fileName)
+    config['country'] = short2long[config['country']]
+    config['b_country'] = short2long[config['b_country']]
+
+    if (config['state'] == "") {
+        config['state'] = 'None'
+    }
+    if (config['b_state'] == "") {
+        config['b_state'] = 'None'
+    }
     returnConfig = {
-        fileName:{
-            "billing": {
-                "address1": config['addy'],
-                "address2": config['apt'],
+        [fileName]: {
+            "name": fileName,
+            "payment": {
+                "email": config['email'],
+                "phone": config['phone'],
+                "card": {
+                    "name": config['fname'] + ' ' + config['sname'],
+                    "number": config['cnum'],
+                    "exp_month": config['month'],
+                    "exp_year": '20' + config['year'],
+                    "cvv": config['cvv']
+                }
+            },
+            "delivery": {
+                "first_name": config['fname'],
+                "last_name": config['sname'],
+                "addr1": config['addy'],
+                "addr2": config['apt'],
+                "zip": config['zip'],
                 "city": config['city'],
                 "country": config['country'],
-                "firstName": config['fname'],
-                "lastName": config['sname'],
-                "phone": config['phone'],
                 "state": config['state'],
-                "zipcode": config['zip']
+                "same_as_del": config['billingequalshipping']
             },
-            "billingMatch":config['billingequalshipping'],
+            "billing": {
+                "first_name": config['b_fname'],
+                "last_name": config['b_sname'],
+                "addr1": config['b_addy'],
+                "addr2": config['b_apt'],
+                "zip": config['b_zip'],
+                "city": config['b_city'],
+                "country": config['b_country'],
+                "state": config['b_state'],
+                "same_as_del": config['billingequalshipping']
+            },
+            "one_checkout": true,
+            "favourite": false
+        }
+    }
+    console.log('converted to correct format')
+    fs.writeFile('profiles/' + fileName + '.json', JSON.stringify(returnConfig), 'utf8', (err) => {
+        if (err) {
+            console.error(err);
+            return;
+        };
+        successMessage = 'Successfully created: <br>' + path.join(__dirname, 'profiles/' + fileName + '.json')
+        console.log(successMessage)
+        mainWindow.webContents.send('output', successMessage);
+    });
+});
+
+ipcMain.on('eve', function () {
+    console.log('Converting profile for EVEAIO')
+    const config = require('./config.json');
+    fileName = 'EVEAIO-' + config['fname'] + config['sname'] + '-' + Math.random().toString(36).substring(2, 6)
+    console.log(fileName)
+
+    if (config['state'] == "") {
+        config['state'] = 'None'
+    }
+    if (config['b_state'] == "") {
+        config['b_state'] = 'None'
+    }
+
+    returnConfig = 
+        [{
+                "ProfileName": fileName,
+                "BillingFirstName": config['b_fname'],
+                "BillingLastName": config['b_sname'],
+                "BillingAddressLine1": config['b_addy'],
+                "BillingAddressLine2": config['b_apt'],
+                "BillingCity": config['b_city'],
+                "BillingState": config['b_state'],
+                "BillingCountryCode": config['b_country'],
+                "BillingZip": config['b_zip'],
+                "BillingPhone": config['phone'],
+                "BillingEmail": config['email'],
+                "ShippingFirstName": config['fname'],
+                "ShippingLastName": config['sname'],
+                "ShippingAddressLine1": config['addy'],
+                "ShippingAddressLine2": config['apt'],
+                "ShippingCity": config['city'],
+                "ShippingState": config['state'],
+                "ShippingCountryCode": config['country'],
+                "ShippingZip": config['zip'],
+                "ShippingPhone": config['phone'],
+                "ShippingEmail": config['email'],
+                "NameOnCard": config['b_fname'] + ' ' + config['b_sname'],
+                "CreditCardNumber": "20"+config['cnum'],
+                "ExpirationMonth": config['month'],
+                "ExpirationYear": config['year'],
+                "Cvv": config['cvv'],
+                "CardType": config['type'],
+                "OneCheckoutPerWebsite": true,
+                "SameBillingShipping": config['billingequalshipping'],
+                "BirthDay": "10",
+                "BirthMonth": "1",
+                "BirthYear": "1990",       
+        }]
+    
+
+    /* 
+    FOR XML
+    
+    returnConfig = {
+        "ArrayOfProfile": {
+            "Profile": {
+                "ProfileName": fileName,
+                "BillingFirstName": config['b_fname'],
+                "BillingLastName": config['b_sname'],
+                "BillingAddressLine1": config['b_addy'],
+                "BillingAddressLine2": config['b_apt'],
+                "BillingCity": config['b_city'],
+                "BillingState": config['b_state'],
+                "BillingCountryCode": config['b_country'],
+                "BillingZip": config['b_zip'],
+                "BillingPhone": config['phone'],
+                "BillingEmail": config['email'],
+                "ShippingFirstName": config['fname'],
+                "ShippingLastName": config['sname'],
+                "ShippingAddressLine1": config['addy'],
+                "ShippingAddressLine2": config['apt'],
+                "ShippingCity": config['city'],
+                "ShippingState": config['state'],
+                "ShippingCountryCode": config['country'],
+                "ShippingZip": config['zip'],
+                "ShippingPhone": config['phone'],
+                "ShippingEmail": config['email'],
+                "NameOnCard": config['b_fname'] + ' ' + config['b_sname'],
+                "CreditCardNumber": config['cnum'],
+                "ExpirationMonth": config['month'],
+                "ExpirationYear": config['year'],
+                "Cvv": config['cvv'],
+                "CardType": config['type'],
+                "OneCheckoutPerWebsite": true,
+                "SameBillingShipping": config['billingequalshipping'],
+                "BirthDay": 10,
+                "BirthMonth": 1,
+                "BirthYearOne": 1990,
+                "ShippingVarious": {},
+                "BillingVarious": {}
+            }
+        }
+    } 
+
+
+    var builder = new xml2js.Builder();
+    var xml = builder.buildObject(returnConfig);
+
+    fs.writeFile("profiles/" + profileName + ".xml", xml, function (err, data) {
+        if (err) {
+            console.error(err);
+            return;
+        };
+        successMessage = 'Successfully created: <br>' + path.join(__dirname, 'profiles/' + fileName + '.xml')
+        console.log(successMessage)
+        mainWindow.webContents.send('output', successMessage);
+    });*/
+
+
+    console.log('converted to correct format')
+    fs.writeFile('profiles/' + fileName + '.json', JSON.stringify(returnConfig), 'utf8', (err) => {
+        if (err) {
+            console.error(err);
+            return;
+        };
+        successMessage = 'Successfully created: <br>' + path.join(__dirname, 'profiles/' + fileName + '.json')
+        console.log(successMessage)
+        mainWindow.webContents.send('output', successMessage);
+    });
+
+
+});
+
+ipcMain.on('dashe', function () {
+    console.log('Converting profile for Project Destroyer')
+    const config = require('./config.json');
+    fileName = 'dashe-' + config['fname'] + config['sname'] + '-' + Math.random().toString(36).substring(2, 6)
+    console.log(fileName)
+    returnConfig = {
+        [fileName]: {
+            "billing": {
+                "address1": config['b_addy'],
+                "address2": config['b_apt'],
+                "city": config['b_city'],
+                "country": config['b_country'],
+                "firstName": config['b_fname'],
+                "lastName": config['b_sname'],
+                "phone": config['b_phone'],
+                "state": config['b_state'],
+                "zipcode": config['b_zip']
+            },
+            "billingMatch": config['billingequalshipping'],
             "card": {
                 "cvv": config['csv'],
                 "holder": config['fname'] + ' ' + config['sname'],
                 "month": config['month'],
                 "number": config['cnum'],
-                "year":'20'+config['year']
+                "year": '20' + config['year']
             },
             "email": config['email'],
-            "profileName":fileName,
+            "profileName": fileName,
             "shipping": {
                 "address": config['addy'],
                 "apt": config['apt'],
@@ -154,22 +653,22 @@ ipcMain.on('dashe',function() {
         }
     }
     console.log('converted to correct format')
-    fs.writeFile('profiles/'+fileName + '.json', JSON.stringify(returnConfig),'utf8', (err)=>{
+    fs.writeFile('profiles/' + fileName + '.json', JSON.stringify(returnConfig), 'utf8', (err) => {
         if (err) {
             console.error(err);
             return;
         };
-        successMessage = 'Successfully created: <br>' + path.join(__dirname, 'profiles/'+fileName+'.json')
+        successMessage = 'Successfully created: <br>' + path.join(__dirname, 'profiles/' + fileName + '.json')
         console.log(successMessage)
         mainWindow.webContents.send('output', successMessage);
     });
 
 })
 
-ipcMain.on('phantom',function () {
+ipcMain.on('phantom', function () {
     console.log('Converting profile for Phantom')
     const config = require('./config.json');
-    fileName = 'phantom-' + config['fname'] + config['sname'] +'-'+ Math.random().toString(36).substring(2, 6)
+    fileName = 'phantom-' + config['fname'] + config['sname'] + '-' + Math.random().toString(36).substring(2, 6)
     console.log(fileName)
     returnConfig = [{
         "Billing": {
@@ -184,14 +683,14 @@ ipcMain.on('phantom',function () {
         "CCNumber": config['cnum'],
         "CVV": config['csv'],
         "CardType": config['ctype'],
-        "Country":config['country'],
+        "Country": config['country'],
         "Email": config['email'],
         "ExpMonth": config['month'],
         "ExpYear": "20" + config['year'],
         "Name": config['fname'] + ' ' + config['sname'],
         "Phone": config['phone'],
         "Same": config['billingequalshipping'],
-        "Shipping":{
+        "Shipping": {
             "Address": config['addy'],
             "Apt": config['apt'],
             "City": config['city'],
@@ -200,34 +699,34 @@ ipcMain.on('phantom',function () {
             "State": config['state'],
             "Zipcode": config['zip']
         }
-       
+
     }]
     console.log('converted to correct format')
-    fs.writeFile('profiles/'+fileName + '.json', JSON.stringify(returnConfig),'utf8', (err)=>{
+    fs.writeFile('profiles/' + fileName + '.json', JSON.stringify(returnConfig), 'utf8', (err) => {
         if (err) {
             console.error(err);
             return;
         };
-        successMessage = 'Successfully created: <br>' + path.join(__dirname, 'profiles/'+fileName+'.json')
+        successMessage = 'Successfully created: <br>' + path.join(__dirname, 'profiles/' + fileName + '.json')
         console.log(successMessage)
         mainWindow.webContents.send('output', successMessage);
     });
 });
 
 
-ipcMain.on('ghost',function () {
+ipcMain.on('ghost', function () {
     console.log('Converting profile for Ghost')
     const config = require('./config.json');
-    fileName = 'ghost-' + config['fname'] + config['sname'] +'-'+ Math.random().toString(36).substring(2, 6)
+    fileName = 'ghost-' + config['fname'] + config['sname'] + '-' + Math.random().toString(36).substring(2, 6)
     console.log(fileName)
     returnConfig = {
         "CCNumber": config['cnum'],
         "CVV": config['csv'],
         "ExpMonth": config['month'],
         "ExpYear": "20" + config['year'],
-        "CardType":config['type'],
+        "CardType": config['type'],
         "Same": config['billingequalshipping'],
-        "Shipping":{
+        "Shipping": {
             "FirstName": config['fname'],
             "LastName": config['sname'],
             "Address": config['addy'],
@@ -236,7 +735,7 @@ ipcMain.on('ghost',function () {
             "State": config['state'],
             "Zip": config['zip']
         },
-        "Billing":{
+        "Billing": {
             "FirstName": config['b_fname'],
             "LastName": config['b_sname'],
             "Address": config['b_addy'],
@@ -244,468 +743,19 @@ ipcMain.on('ghost',function () {
             "City": config['b_city'],
             "State": config['b_state'],
             "Zip": config['b_zip']
-        },                
+        },
         "Phone": config['phone'],
         "Name": config['fname'] + ' ' + config['sname'],
-        "Country":config['country']
+        "Country": config['country']
     }
     console.log('converted to correct format')
-    fs.writeFile('profiles/'+fileName + '.json', JSON.stringify(returnConfig),'utf8', (err)=>{
+    fs.writeFile('profiles/' + fileName + '.json', JSON.stringify(returnConfig), 'utf8', (err) => {
         if (err) {
             console.error(err);
             return;
         };
-        successMessage = 'Successfully created: <br>' + path.join(__dirname, 'profiles/'+fileName+'.json')
+        successMessage = 'Successfully created: <br>' + path.join(__dirname, 'profiles/' + fileName + '.json')
         console.log(successMessage)
         mainWindow.webContents.send('output', successMessage);
     });
 });
-
-
-
-ipcMain.on('start', function (start) {
-    mainWindow.webContents.send('message', 'x');
-    const config = require('./config.json');
-    const Discord = require('discord.js');
-    const bot = new Discord.Client();
-    const fs = require('fs');
-    let guild;
-    let cartNum = 0;
-    let redeemedTotal = [];
-    let liveTotal = 0;
-    let carts = [];
-
-    let cartsStore = [];
-
-    /* Server/guild ID */
-    let server = config.server;
-    /* This is a hidden channel, normal members should not be able to see this */
-    let privateChannel = config.privateChannel;
-    /* This is a public channel, 'everyone' should be able to see this */
-    let publicChannel = config.publicChannel;
-    /* Bot login token */
-    let botToken = config.botToken;
-    //check if user wants one cart per person;
-    let quantityCart = config.quantityCart;
-    //checks if user wants messages to stay in channel
-    let deleteAfterReact = config.deleteAfterReact;
-    //checks if user wants 10 minute expiration
-    let after10 = config.after10
-    //cool down
-    let cooldown = config.cooldown
-
-    bot.login(botToken).catch(err => mainWindow.webContents.send('loginError', 'loginError'));
-
-
-
-
-    bot.on('ready', () => {
-        console.log(`Logged in as ${bot.user.username}!`);
-        guild = bot.guilds.get(server);
-        serverName = guild.name;
-        serverImg = 'https://cdn.discordapp.com/icons/' + guild.id + '/' + guild.icon + '.png';
-        console.log(serverImg);
-        mainWindow.webContents.send('serverImg', serverImg);
-        mainWindow.webContents.send('serverName', serverName);
-        mainWindow.webContents.send('botName', bot.user.username + '#' + bot.user.discriminator)
-    });
-
-    bot.on('message', message => {
-        try{
-            /* if (message.author.bot) return; */
-            if (message.channel.type === 'dm') return;
-            if (message.channel.id === privateChannel) {
-                cartNum += 1;
-                message.embeds.forEach((e) => {
-                    if (e.footer) {
-                        if (e.footer.text === 'Splashforce') {
-                            size = ((e.title).slice(20));
-                            email = (e.description).split(' ')[1].split('\n')[0];
-                            pass = (e.description).split(': ')[2];
-                            loginURL = e.url;
-                            img = e.thumbnail.url;
-                            /* Look into getting sku from link /shrug */
-                            sku = '';
-                            //console.log('Size: ' + size);
-                            //console.log('Email:Pass : ' + email + ':' + pass);
-                            //console.log('Login link: ' + loginURL);
-                            //console.log('Image: ' + img);
-                            const embed = new Discord.RichEmbed()
-                                .setColor(0x00FF00)
-                                .setTimestamp()
-                                .setDescription(`Size: ${size}`)
-                                .setFooter(`Cart: # ${cartNum} • Made by Jalfrazi`, 'https://pbs.twimg.com/profile_images/1088110085912649729/usJQewZx_400x400.jpg')
-                                .setThumbnail(img);
-                            carts.push({
-                                embed
-                            });
-                            liveTotal = cartNum - redeemedTotal.length;
-                            mainWindow.webContents.send('liveTotal', liveTotal);
-                            mainWindow.webContents.send('redeemedTotal', redeemedTotal.length);
-                            mainWindow.webContents.send('cartsTotal', cartNum);
-                            writeCart(cartNum, email, pass, loginURL, img, size, sku)
-                        } else if (e.footer.text === 'yCopp Ultimate Adidas Bot') {
-                            //clothing size
-                            size = (e.title).split(',')[1];
-                            email = (e.fields)[0]['value'];
-                            pass = (e.fields)[1]['value'];
-
-                            loginURL = e.url;
-                            sku = ((e.title).split(',')[0]);
-                            img = `http://demandware.edgesuite.net/sits_pod20-adidas/dw/image/v2/aaqx_prd/on/demandware.static/-/;Sites-adidas-products/en_US/dw8b928257/zoom/${sku}_01_standard.jpg`;
-                            //console.log('Size: ' + size);
-                            //console.log('Email:Pass : ' + email + ':' + pass);
-                            //console.log('Login link: ' + loginURL);
-                            //console.log('Image: ' + img);
-                            const embed = new Discord.RichEmbed()
-                                .setColor(0x00FF00)
-                                .setTimestamp()
-                                .setDescription(`Size: ${size} \nSKU: ${sku}`)
-                                .setFooter(`Cart: # ${cartNum} • Made by Jalfrazi`, 'https://pbs.twimg.com/profile_images/1088110085912649729/usJQewZx_400x400.jpg')
-                                .setThumbnail(img);
-                            carts.push({
-                                embed
-                            });
-                            console.log(carts);
-                            liveTotal = cartNum - redeemedTotal.length;
-                            mainWindow.webContents.send('liveTotal', liveTotal);
-                            mainWindow.webContents.send('redeemedTotal', redeemedTotal.length);
-                            mainWindow.webContents.send('cartsTotal', cartNum);
-                            writeCart(cartNum, email, pass, loginURL, img, size, sku)
-
-                        } else if (e.footer.text === 'LatchKeyIO Adidas Bot') {
-                            size = (e.fields)[2]['value'];
-                            email = (e.fields)[4]['value'];
-                            pass = (e.fields)[5]['value'];
-    
-                            loginURL = e.url;
-                            img = e.thumbnail.url;
-                            sku = (e.fields)[1]['value'];
-                            //console.log('Size: ' + size);
-                            //console.log('Email:Pass : ' + email + ':' + pass);
-                            //console.log('Login link: ' + loginURL);
-                            //console.log('Image: ' + img);
-                            const embed = new Discord.RichEmbed()
-                                .setColor(0x00FF00)
-                                .setTimestamp()
-                                .setDescription(`Size: ${size} \nSKU: ${sku}`)
-                                .setFooter(`Cart: # ${cartNum} • Made by Jalfrazi`, 'https://pbs.twimg.com/profile_images/1088110085912649729/usJQewZx_400x400.jpg')
-                                .setThumbnail(img);
-                            carts.push({
-                                embed
-                            });
-                            liveTotal = cartNum - redeemedTotal.length;
-                            mainWindow.webContents.send('liveTotal', liveTotal);;
-                            mainWindow.webContents.send('redeemedTotal', redeemedTotal.length);
-                            mainWindow.webContents.send('cartsTotal', cartNum);
-                            writeCart(cartNum, email, pass, loginURL, img, size, sku)
-
-                        } else if (e.footer.text === 'Sole AIO Adidas Mode') {
-                            size = (e.fields)[1]['value'];
-                            email = (e.fields)[2]['value'];
-                            pass = (e.fields)[3]['value'];
-    
-                            loginURL = e.url;
-                            img = e.thumbnail.url;
-                            sku = (e.title).slice(0,6);
-                            //console.log('Size: ' + size);
-                            //console.log('Email:Pass : ' + email + ':' + pass);
-                            //console.log('Login link: ' + loginURL);
-                            //console.log('Image: ' + img);
-                            const embed = new Discord.RichEmbed()
-                                .setColor(0x00FF00)
-                                .setTimestamp()
-                                .setDescription(`Size: ${size} \nSKU: ${sku}`)
-                                .setFooter(`Cart: # ${cartNum} • Made by Jalfrazi`, 'https://pbs.twimg.com/profile_images/1088110085912649729/usJQewZx_400x400.jpg')
-                                .setThumbnail(img);
-                            carts.push({
-                                embed
-                            });
-                            liveTotal = cartNum - redeemedTotal.length;
-                            mainWindow.webContents.send('liveTotal', liveTotal);;
-                            mainWindow.webContents.send('redeemedTotal', redeemedTotal.length);
-                            mainWindow.webContents.send('cartsTotal', cartNum);
-                            writeCart(cartNum, email, pass, loginURL, img, size, sku)
-
-                        } else if (e.footer.text === 'AdiSplash by Backdoor, All Rights Reserved.') {
-                            size = (e.fields)[1]['value']
-                            userPass = (e.fields)[2]['value']
-                            email = (userPass).split(': ')[1].split('\n')[0]
-                            pass = (userPass).split(': ')[2]
-
-                            loginURL = e.url
-                            sku = (e.fields)[0]['value']
-                            img = 'https://transform.dis.commercecloud.salesforce.com/transform/aagl_prd/on/demandware.static/-/Sites-adidas-products/default/zoom/'+sku+'_00_plp_standard.jpg?sw=276&sh=276&sm=fit&strip=false'
-                            //console.log('Size: ' + size)
-                            //console.log('Email:Pass : ' + email + ':' + pass)
-                            //console.log('Login link: ' + loginURL)
-                            //console.log('Image: ' + img)
-
-                            const embed = new Discord.RichEmbed()
-                                .setColor(0x00FF00)
-                                .setTimestamp()
-                                .setDescription(`Size: ${size} \nSKU: ${sku}`)
-                                .setFooter(`Cart: # ${cartNum} • Made by Jalfrazi`, 'https://pbs.twimg.com/profile_images/1088110085912649729/usJQewZx_400x400.jpg')
-                                .setThumbnail(img);
-
-                            carts.push({
-                                embed
-                            });
-                            liveTotal = cartNum - redeemedTotal.length;
-                            mainWindow.webContents.send('liveTotal', liveTotal);
-                            mainWindow.webContents.send('redeemedTotal', redeemedTotal.length);
-                            mainWindow.webContents.send('cartsTotal', cartNum);
-                            writeCart(cartNum, email, pass, loginURL, img, size, sku)
-                        }
-                            else if (e.footer.text === 'Phantom') {
-                                size = (e.fields)[1]['value']
-                                userPass = (e.fields)[4]['value']
-                                email = (userPass).split(':')[0]
-                                pass = (userPass).split(':')[1]
-        
-                                loginURL = 'https://www.adidas.com/'
-                                img = ''
-                                //sku = (e.fields)[0]['value']
-                                //console.log('Size: ' + size)
-                                //console.log('Email:Pass : ' + email + ':' + pass)
-                                //console.log('Login link: ' + loginURL)
-                                //console.log('Image: ' + img)
-        
-                                const embed = new Discord.RichEmbed()
-                                    .setColor(0x00FF00)
-                                    .setTimestamp()
-                                    .setDescription(`Size: ${size} \nSKU: ${sku}`)
-                                    .setFooter(`Cart: # ${cartNum} • Made by Jalfrazi`, 'https://pbs.twimg.com/profile_images/1088110085912649729/usJQewZx_400x400.jpg')
-                                    .setThumbnail(img);
-        
-                                carts.push({
-                                    embed
-                                });
-                                liveTotal = cartNum - redeemedTotal.length;
-                                mainWindow.webContents.send('liveTotal', liveTotal);
-                                mainWindow.webContents.send('redeemedTotal', redeemedTotal.length);
-                                mainWindow.webContents.send('cartsTotal', cartNum);
-                                writeCart(cartNum, email, pass, loginURL, img, size, sku)
-
-                        } else if ((e.footer.text).startsWith('NoMercy')) {
-                            size = (e.fields)[1]['value'];
-                            email = (e.fields)[3]['value'];
-                            pass = (e.fields)[4]['value'];
-
-                            loginURL = e.url;
-                            img = e.thumbnail.url;
-                            sku = (e.fields)[0]['value'];
-                            //console.log('Size: ' + size);
-                            //console.log('Email:Pass : ' + email + ':' + pass);
-                            //console.log('Login link: ' + loginURL);
-                            //console.log('Image: ' + img);
-                            const embed = new Discord.RichEmbed()
-                                .setColor(0x00FF00)
-                                .setTimestamp()
-                                .setDescription(`Size: ${size} \nSKU: ${sku}`)
-                                .setFooter(`Cart: # ${cartNum} • Made by Jalfrazi`, 'https://pbs.twimg.com/profile_images/1088110085912649729/usJQewZx_400x400.jpg')
-                                .setThumbnail(img);
-                            carts.push({
-                                embed
-                            });
-                            writeCart(cartNum, email, pass, loginURL, img, size, sku)
-                        } else if (e.footer.text === 'Gen5 Adidas') {
-                            size = (e.fields)[1]['value'];
-                            email = (e.fields)[3]['value'];
-                            pass = (e.fields)[4]['value'];
-                            loginURL = e.url;
-                            img = e.thumbnail.url;
-                            sku = (e.fields)[0]['value'];
-                            //console.log('Size: ' + size);
-                            //console.log('Email:Pass : ' + email + ':' + pass);
-                            //console.log('Login link: ' + loginURL);
-                            //console.log('Image: ' + img);
-                            const embed = new Discord.RichEmbed()
-                                .setColor(0x00FF00)
-                                .setTimestamp()
-                                .setDescription(`Size: ${size} \nSKU: ${sku}`)
-                                .setFooter(`Cart: # ${cartNum} • Made by Jalfrazi`, 'https://pbs.twimg.com/profile_images/1088110085912649729/usJQewZx_400x400.jpg')
-
-                            carts.push({
-                                embed
-                            })
-
-                            liveTotal = cartNum - redeemedTotal.length
-                            mainWindow.webContents.send('liveTotal', liveTotal);
-                            mainWindow.webContents.send('redeemedTotal', redeemedTotal.length)
-                            mainWindow.webContents.send('cartsTotal', cartNum);
-                            writeCart(cartNum, email, pass, loginURL, img, size, sku)
-
-                        }
-                    }
-                })
-            }
-            if (message.channel.id == publicChannel) {
-                message.react('🛒')
-            }
-    }catch(err){
-        console.log(err)
-    }
-    })
-
-    function sendCarts() {
-        if (carts.length > 0) {
-            console.log('Posting cart to public channel...')
-            guild.channels.get(publicChannel).send(
-                carts.shift()
-            );
-
-        }
-    }
-    setInterval(sendCarts, 2000)
-
-    /* FOR 1 CART ONLY */
-    redeemed = []
-    /* FOR 1 CART ONLY */
-
-
-    //cart cooldown
-    let cooldownSeconds = cooldown*1000
-
-
-    bot.on('messageReactionAdd', (reaction, user) => {
-        //console.log(redeemed)
-        if (reaction.message.author.bot) {
-            if (redeemedTotal.includes(reaction.message.id)){
-                return
-            }
-            //ttt
-            
-            /* FOR 1 CART ONLY */
-            let redeemingUser;
-            if ((redeemingUser = redeemed.find(element => element.userid == user.id))) {                
-                if (redeemingUser.redeemedLast + cooldownSeconds > Date.now() ){
-                    console.log(`${redeemingUser.name} still on cooldown`)
-                    reaction.remove(user)
-                    return
-                } 
-                if (redeemingUser.quantityCart == quantityCart) {
-                    console.log(`${redeemingUser.name} at max carts`)
-                    reaction.remove(user)
-                    return
-                }
-            }
-            /* FOR 1 CART ONLY */
-
-
-
-            /* console.log(reaction.message.id); */
-            if (reaction.message.channel.id == publicChannel) {
-                //console.log('Reaction added; current count:', reaction.count);
-                if (reaction.count == 2) {
-                    (reaction.users).forEach(element => {
-                        //console.log(element['username'])
-                        //console.log('user ID: ' + element['id'])
-                        cartID = (reaction.message.embeds[0].footer.text).split('# ')[1].split(' • M')[0]
-
-                        for (i = 0; i < cartsStore.length; i++) {
-                            if (cartsStore[i]['id'] == cartID){
-                                if (element['bot'] != true) {
-                                    if(after10 && (Date.now() - cartsStore[i]['time'] )<600000){
-                                        /* FOR 1 CART ONLY */
-                                        if (quantityCart > 0) {
-                                            if ((redeemingUser = redeemed.find(element => element.userid == user.id))) {
-                                                if (redeemingUser.quantityCart < quantityCart) {
-                                                    redeemingUser.quantityCart++
-                                                    redeemingUser.redeemedLast = Date.now()
-                                                }
-                                            } else {
-                                                redeemed.push({
-                                                    userid: user.id,
-                                                    name: user.username + '#' + user.discriminator,
-                                                    quantityCart: 1,
-                                                    redeemedLast: Date.now()
-                                                })
-                                            }
-                                        }
-
-                                        /* FOR N CART(s) */
-
-                                        console.log(user.username + '#' + user.discriminator + ' redeemed cart #' +  cartsStore[i]['id'] )
-
-                                        const embed = new Discord.RichEmbed()
-                                            .setColor(0x00FF00)
-                                            .setTimestamp()
-                                            .setTitle(`Size: ${cartsStore[i]['size']}`)
-                                            .setURL(cartsStore[i]['login'])
-                                            .setDescription(`Email: ${cartsStore[i]['email']} \nPassword: ${cartsStore[i]['pass']}`)
-                                            .setFooter(`Cart: # ${cartsStore[i]['id']} • Made by Jalfrazi`, 'https://pbs.twimg.com/profile_images/1088110085912649729/usJQewZx_400x400.jpg')
-                                        if (cartsStore[i]['image'] != '') {
-                                            embed.setThumbnail(cartsStore[i]['image'])
-                                        }
-                                        if (cartsStore[i]['sku'] != '') {
-                                            embed.setDescription(`Email: ${cartsStore[i]['email']} \nPassword: ${cartsStore[i]['pass']} \nSKU: ${cartsStore[i]['sku']}`)
-                                        }else if (cartsStore[i]['email'] != ''){
-                                            embed.setDescription(`Email: ${cartsStore[i]['email']} \nPassword: ${cartsStore[i]['pass']}`)
-                                        }
-
-                                        guild.members.get(element['id']).send({
-                                            embed
-                                        });
-
-                                        redeemedTotal.push(reaction.message.id);
-
-                                        try{
-                                            if(deleteAfterReact ==false){
-                                                reaction.message.edit({embed:{color:0xFF0000,title:'REDEEMED by '+user.username + '#' + user.discriminator,timestamp:new Date(),url:reaction.message.embeds[0].url,description:reaction.message.embeds[0].description,thumbnail:{url:reaction.message.embeds[0].thumbnail.url},footer:{text: reaction.message.embeds[0].footer.text, icon_url: reaction.message.embeds[0].footer.iconURL}}})
-                                            }
-                                        }                                    
-                                        catch(err){
-                                            console.log(err)
-                                        }
-
-
-                                        liveTotal = cartNum - redeemedTotal.length;
-                                        console.log(`live: ${liveTotal}`);
-                                        mainWindow.webContents.send('liveTotal', liveTotal);
-                                        mainWindow.webContents.send('redeemedTotal', redeemedTotal.length);
-                                        mainWindow.webContents.send('redeemedOutput',redeemed);
-                                        console.log(`redeemed: ${redeemedTotal.length}`)
-                                    }
-                                    else if((Date.now() - cartsStore[i]['time'] )>600000){
-                                        redeemedTotal.push(reaction.message.id);
-                                        try{
-                                            if(deleteAfterReact ==false){
-                                                reaction.message.edit({embed:{color:0x36393F,title:'EXPIRED',timestamp:new Date(),url:reaction.message.embeds[0].url,description:reaction.message.embeds[0].description,thumbnail:{url:reaction.message.embeds[0].thumbnail.url},footer:{text: reaction.message.embeds[0].footer.text, icon_url: reaction.message.embeds[0].footer.iconURL}}})
-                                            }
-                                        }                                    
-                                        catch(err){
-                                            console.log(err)
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    });
-                    if (deleteAfterReact) {
-                        reaction.message.delete()
-                    }
-
-                }
-            }
-        }
-    });
-
-    function writeCart(cartNum, email, pass, loginURL, img, size, sku) {
-        liveTotal = cartNum - redeemedTotal.length;
-        mainWindow.webContents.send('liveTotal', liveTotal);
-        mainWindow.webContents.send('redeemedTotal', redeemedTotal.length);
-        mainWindow.webContents.send('cartsTotal', cartNum);
-
-        cartsStore.push({
-            'id': (cartNum).toString(),
-            'email': email,
-            'pass': pass,
-            'login': loginURL,
-            'image': img,
-            'size': size,
-            'sku': sku,
-            'time': Date.now()
-        })
-    }
-})
