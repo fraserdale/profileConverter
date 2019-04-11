@@ -282,10 +282,10 @@ let short2long = {
 app.on('ready', function () {
     //create new window
     mainWindow = new BrowserWindow({
-        width: 800,
-        height: 752,
-        minWidth: 800,
-        minHeight: 752,
+        width: 900,
+        height: 900,
+        minWidth: 900,
+        minHeight: 900,
     });
     //mainWindow.setMenu(null)
     mainWindow.setTitle('Profile Converter | Discord Utils')
