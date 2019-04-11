@@ -44,3 +44,7 @@ input[text]{
     margin-right:10%;
     float: right
 }
+
+.input-field > a{
+    width: 200px
+}
