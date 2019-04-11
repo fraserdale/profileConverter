@@ -660,30 +660,51 @@
                         <option value="amex">Amex</option>
                         <option value="discovery">Discorvery</option>
                     </select>
-                    </div>
+                </div>
                 <div class="input-field" style='float: right; width: 48%;margin-right:1%'>
                     <label>CVV</label>
                     <input type="text" id="cvv">
                 </div>
-                <div class="input-field" style='float: left; width: 48%;opacity:0'>
-                    <label>State</label>
-                    <input type="text" id="" disabled>
+                <div class="input-field" style='float: right; width: 48%'>
+                    <a onclick="save()" class="waves-effect waves-light btn-small" style="width:140px">Save Profile</a>
                 </div>
-                <div class="input-field" style='float: right; width: 48%;opacity:0'>
-                    <label>Post/Zip code</label>
-                    <input type="text" id="" disabled>
+                <div class="input-field" style='float: right; width: 48%;margin-right:1%'>
+                    <label>Profile Name</label>
+                    <input type="text" id="profile_name">
                 </div>
-                <div class="input-field" style='float: left; width: 48%'>
+                <div class="input-field" style='float: right; width: 48%'>
+                    <a onclick="loadProfile()" class="waves-effect waves-light btn-small" style="width:140px">Load Profile</a>
+                </div>
+                <div class="input-field" style='float: right; width: 47%;margin-right: 1%'>
+                    <select class='selectCorrect' style='display:block' id='profiles' onclick="">
+                        <option selected disabled>Profile Name</option>
+                    </select>
+                </div>
+                <div class="input-field" style='float: right; width: 48%'>
+                    <a onclick="deleteProfile()" class="waves-effect waves-light btn-small red" style="width:140px" disabled>Delete Profile</a>
+                </div>
+                <div class="input-field" style='float: right; width: 47%;margin-right: 1%'>
+                    <select class='selectCorrect' style='display:block' id='profiles_delete' onclick="">
+                        <option selected disabled>Profile Name</option>
+                    </select>
+                </div>
+                <div class="input-field" style='float: left; width: 48%;opacity: 0'>
                     <a onclick="save()" class="waves-effect waves-light btn-small" style="width:140px">Save Profile</a>
                 </div>
                 <div class="input-field" style='float: right; width: 48%;'>
                     <a onclick="next_page()" class="waves-effect waves-light btn-small red" style="width:140px">Export</a>
                 </div>
+                
             </form>
         </div>
         <div id='converter' style='display: none'>
             <div class="input-field">
                 <a class="waves-effect waves-light btn" onclick="backToProfiles()">Edit Profile</a>
+            </div>
+            <div class="input-field">
+                <select class='selectCorrect' style='display:block' id='profiles_select'>
+                    <option selected disabled>Profile Name</option>
+                </select>
             </div>
             <div id='col1'>
                 <div class="input-field">

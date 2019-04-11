@@ -307,20 +307,46 @@ function readConfig() {
 }
 
 //catch save
-ipcMain.on('configSave', function (e, config) {
-    fs.writeFile('config.json', config, (err) => {
+ipcMain.on('configSave', function (e, config,profile_name) {
+    const old_configs = require('./config.json')   
+    old_configs[profile_name] = JSON.parse(config)
+    console.log('odonbe')
+    fs.writeFile('config.json', JSON.stringify(old_configs), (err) => {
         // throws an error, you could also catch it here
         if (err) throw err;
         // success case, the file was saved
         console.log('saved config');
     });
-    console.log(config)
+    console.log(old_configs)
 });
 
-ipcMain.on('pd', function () {
+ipcMain.on('configOverwrite', function (e, newConfig) {
+    fs.writeFile('config.json', JSON.stringify(newConfig), (err) => {
+        // throws an error, you could also catch it here
+        if (err) throw err;
+        // success case, the file was saved
+    });
+});
+
+
+ipcMain.on('returnConfigDelete', function (e) {
+    old_configs = require('./config.json')   
+    mainWindow.webContents.send('profilesDelete', old_configs);
+});
+
+ipcMain.on('returnConfig', function (e) {
+    old_configs = require('./config.json')   
+    mainWindow.webContents.send('returnedConfig', old_configs);
+});
+
+ipcMain.on('returnNames',function(e){
+    old_configs = require('./config.json')   
+    mainWindow.webContents.send('returnedNames', old_configs);
+})
+
+ipcMain.on('pd', function (e,config,pname) {
     console.log('Converting profile for Project Destroyer')
-    const config = require('./config.json');
-    fileName = 'pd-' + config['fname'] + config['sname'] + '-' + Math.random().toString(36).substring(2, 6)
+    fileName = 'pd_' + pname.replace(' ','') + '-' + Math.random().toString(36).substring(2, 6)
     console.log(fileName)
     returnConfig = [{
         "billing": {
@@ -371,10 +397,10 @@ ipcMain.on('pd', function () {
 
 
 
-ipcMain.on('hastey', function () {
+ipcMain.on('hastey', function (e,config,pname) {
     console.log('Converting profile for Hastey Supreme')
     const config = require('./config.json');
-    fileName = 'hastey-' + config['fname'] + config['sname'] + '-' + Math.random().toString(36).substring(2, 6)
+    fileName = 'hastey_' + pname.replace(' ','') + '-' + Math.random().toString(36).substring(2, 6)
     console.log(fileName)
     if (config['b_country'] == 'US'){
         country = 'USA'
@@ -422,10 +448,10 @@ ipcMain.on('hastey', function () {
 
 
 
-ipcMain.on('cyber', function () {
+ipcMain.on('cyber', function (e,config,pname) {
     console.log('Converting profile for CyberAIO')
     const config = require('./config.json');
-    fileName = 'cyber-' + config['fname'] + config['sname'] + '-' + Math.random().toString(36).substring(2, 6)
+    fileName = 'cyber_' + pname.replace(' ','') + '-' + Math.random().toString(36).substring(2, 6)
     console.log(fileName)
     config['country'] = short2long[config['country']]
     config['b_country'] = short2long[config['b_country']]
@@ -488,10 +514,10 @@ ipcMain.on('cyber', function () {
     });
 });
 
-ipcMain.on('eve', function () {
+ipcMain.on('eve', function (e,config,pname) {
     console.log('Converting profile for EVEAIO')
     const config = require('./config.json');
-    fileName = 'EVEAIO-' + config['fname'] + config['sname'] + '-' + Math.random().toString(36).substring(2, 6)
+    fileName = 'EVE_' + pname.replace(' ','') + '-' + Math.random().toString(36).substring(2, 6)
     console.log(fileName)
 
     if (config['state'] == "") {
@@ -611,10 +637,10 @@ ipcMain.on('eve', function () {
 
 });
 
-ipcMain.on('dashe', function () {
+ipcMain.on('dashe', function (e,config,pname) {
     console.log('Converting profile for Project Destroyer')
     const config = require('./config.json');
-    fileName = 'dashe-' + config['fname'] + config['sname'] + '-' + Math.random().toString(36).substring(2, 6)
+    fileName = 'dashe_' + pname.replace(' ','') + '-' + Math.random().toString(36).substring(2, 6)
     console.log(fileName)
     returnConfig = {
         [fileName]: {
@@ -665,10 +691,10 @@ ipcMain.on('dashe', function () {
 
 })
 
-ipcMain.on('phantom', function () {
+ipcMain.on('phantom', function (e,config,pname) {
     console.log('Converting profile for Phantom')
     const config = require('./config.json');
-    fileName = 'phantom-' + config['fname'] + config['sname'] + '-' + Math.random().toString(36).substring(2, 6)
+    fileName = 'phantom_' + pname.replace(' ','') + '-' + Math.random().toString(36).substring(2, 6)
     console.log(fileName)
     returnConfig = [{
         "Billing": {
@@ -714,10 +740,10 @@ ipcMain.on('phantom', function () {
 });
 
 
-ipcMain.on('ghost', function () {
+ipcMain.on('ghost', function (e,config,pname) {
     console.log('Converting profile for Ghost')
     const config = require('./config.json');
-    fileName = 'ghost-' + config['fname'] + config['sname'] + '-' + Math.random().toString(36).substring(2, 6)
+    fileName = 'ghost_' + pname.replace(' ','') + '-' + Math.random().toString(36).substring(2, 6)
     console.log(fileName)
     returnConfig = {
         "CCNumber": config['cnum'],

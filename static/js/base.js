@@ -1,5 +1,8 @@
 (function () {
-  const config = require('../config.json')
+  config_list = require('../config.json')
+  config = config_list[Object.keys(config_list)[0]]
+
+
   document.getElementById('fname').value = config.fname
   document.getElementById('sname').value = config.sname
   document.getElementById('addy').value = config.addy
@@ -13,28 +16,131 @@
   if (config.billingequalshipping) {
     document.getElementById('billingequalshipping').checked = true
     toggleBilling()
-  }else{
-    document.getElementById('b_fname').value = config.b_fname
-    document.getElementById('b_sname').value = config.b_sname
-    document.getElementById('b_addy').value = config.b_addy
-    document.getElementById('b_apt').value = config.b_apt
-    document.getElementById('b_city').value = config.b_city
-    document.getElementById('b_country').value = config.b_country
-    document.getElementById('b_state').value = config.b_state
-    document.getElementById('b_zip').value = config.b_zip
   }
+  document.getElementById('b_fname').value = config.b_fname
+  document.getElementById('b_sname').value = config.b_sname
+  document.getElementById('b_addy').value = config.b_addy
+  document.getElementById('b_apt').value = config.b_apt
+  document.getElementById('b_city').value = config.b_city
+  document.getElementById('b_country').value = config.b_country
+  document.getElementById('b_state').value = config.b_state
+  document.getElementById('b_zip').value = config.b_zip
   document.getElementById('cnum').value = config.cnum
   document.getElementById('cvv').value = config.cvv
   document.getElementById('month').value = config.month
   document.getElementById('year').value = config.year
-  document.getElementById('type').value = config.type  
+  document.getElementById('type').value = config.type
+  document.getElementById('profile_name').value = Object.keys(config_list)[0]
 })();
-
 
 const electron = require('electron');
 const {
   ipcRenderer
-} = electron;
+} = electron
+
+
+function loadProfileNames() {
+  ipcRenderer.send('returnNames');
+}
+
+
+ipcRenderer.on('returnedNames', function (returnedNames, new_config_list) {
+  keys = Object.keys(new_config_list)
+  var sel = document.getElementById('profiles');
+  for (var i = sel.options.length - 1; i >= 0; i--)
+    sel.remove(i);
+  keys.forEach(element => {
+    // get reference to select element
+    var sel = document.getElementById('profiles');
+    // create new option element
+    var opt = document.createElement('option');
+    // create text node to add to option element (opt)
+    opt.appendChild(document.createTextNode(element));
+    // set value property of opt
+    opt.value = element;
+    // add opt to end of select box (sel)
+    sel.appendChild(opt);
+  });
+  var sel = document.getElementById('profiles_delete');
+  for (var i = sel.options.length - 1; i >= 0; i--)
+    sel.remove(i);
+  keys.forEach(element => {
+    // get reference to select element
+    var sel = document.getElementById('profiles_delete');
+    // create new option element
+    var opt = document.createElement('option');
+    // create text node to add to option element (opt)
+    opt.appendChild(document.createTextNode(element));
+    // set value property of opt
+    opt.value = element;
+    // add opt to end of select box (sel)
+    sel.appendChild(opt);
+  });
+  var sel = document.getElementById('profiles_select');
+  for (var i = sel.options.length - 1; i >= 0; i--)
+    sel.remove(i);
+  keys.forEach(element => {
+    // get reference to select element
+    var sel = document.getElementById('profiles_select');
+    // create new option element
+    var opt = document.createElement('option');
+    // create text node to add to option element (opt)
+    opt.appendChild(document.createTextNode(element));
+    // set value property of opt
+    opt.value = element;
+    // add opt to end of select box (sel)
+    sel.appendChild(opt);
+  });
+  
+})
+
+loadProfileNames()
+
+function deleteProfile(){
+  ipcRenderer.send('returnConfigDelete')
+}
+
+ipcRenderer.on('profilesDelete',function(profilesDelete, config_list){
+  pname = document.getElementById('profiles_delete').value
+  delete config_list[pname]
+  ipcRenderer.send('configOverwrite',config_list)
+  loadProfileNames()
+})
+
+function loadProfile() {
+  ipcRenderer.send('returnConfig');
+}
+
+ipcRenderer.on('returnedConfig', function (returnedConfig, config_list) {
+  console.log(config_list)
+  pname = document.getElementById('profiles').value
+  config = config_list[pname]
+  document.getElementById('fname').value = config.fname
+  document.getElementById('sname').value = config.sname
+  document.getElementById('addy').value = config.addy
+  document.getElementById('apt').value = config.apt
+  document.getElementById('city').value = config.city
+  document.getElementById('country').value = config.country
+  document.getElementById('state').value = config.state
+  document.getElementById('zip').value = config.zip
+  document.getElementById('email').value = config.email
+  document.getElementById('phone').value = config.phone
+  document.getElementById('billingequalshipping').checked = true
+  document.getElementById('b_fname').value = config.b_fname
+  document.getElementById('b_sname').value = config.b_sname
+  document.getElementById('b_addy').value = config.b_addy
+  document.getElementById('b_apt').value = config.b_apt
+  document.getElementById('b_city').value = config.b_city
+  document.getElementById('b_country').value = config.b_country
+  document.getElementById('b_state').value = config.b_state
+  document.getElementById('b_zip').value = config.b_zip
+  document.getElementById('cnum').value = config.cnum
+  document.getElementById('cvv').value = config.cvv
+  document.getElementById('month').value = config.month
+  document.getElementById('year').value = config.year
+  document.getElementById('type').value = config.type
+  document.getElementById('profile_name').value = pname
+})
 
 /* function stop() {
   ipcRenderer.send('stop');
@@ -79,7 +185,7 @@ ipcRenderer.on('botName', function (botName, bname) {
 ipcRenderer.on('redeemedOutput', function (redeemedOutput, redeemedOut) {
   outString = '';
   redeemedOut.forEach(element => {
-    outString += element.name + ': ' + element.quantityCart +'\n'
+    outString += element.name + ': ' + element.quantityCart + '\n'
   });
   document.getElementById('textOut').innerHTML = outString
 });
@@ -89,8 +195,8 @@ ipcRenderer.on('loginError', function (loginError, x) {
 });
 
 
-ipcRenderer.on('output',function(output, output){
-  document.getElementById('output').innerHTML = '<code>'+output + '</code>'  
+ipcRenderer.on('output', function (output, output) {
+  document.getElementById('output').innerHTML = '<code>' + output + '</code>'
 })
 
 function save() {
@@ -105,10 +211,11 @@ function save() {
   const email = document.getElementById('email').value
   const phone = document.getElementById('phone').value
   const billingequalshipping = document.getElementById('billingequalshipping').checked
-  const cnum = ((document.getElementById('cnum').value).match(/.{1,4}/g)).join(' ')
-  const month = document.getElementById('month').value 
-  const year = document.getElementById('year').value 
-  const cvv = document.getElementById('cvv').value 
+  //().match(/.{1,4}/g)).join(' ')
+  const cnum = document.getElementById('cnum').value
+  const month = document.getElementById('month').value
+  const year = document.getElementById('year').value
+  const cvv = document.getElementById('cvv').value
   const type = document.getElementById('type').value
   //config = `{"fname":"${fname}","sname":"${sname}","addy":"${addy}","apt":"${apt}","city":"${city}","country":"${country}","state":"${state}","zip":"${zip}","email":"${email}","phone":"${phone}","billingequalshipping":${billingequalshipping},
   //"cnum":"${cnum}","month":"${month}","year":"${year}","cvv":"${cvv}","type":"${type}"}`
@@ -116,25 +223,26 @@ function save() {
   const b_addy = document.getElementById('b_addy').value;
   const b_apt = document.getElementById('b_apt').value;
   const b_city = document.getElementById('b_city').value;
-  const b_country = document.getElementById('b_country').value
-  const b_state = document.getElementById('b_state').value
-  const b_zip = document.getElementById('b_zip').value
+  const b_country = document.getElementById('b_country').value;
+  const b_state = document.getElementById('b_state').value;
+  const b_zip = document.getElementById('b_zip').value;
+  const profile_name = document.getElementById('profile_name').value
   config = `{"fname":"${fname}","sname":"${sname}","addy":"${addy}","apt":"${apt}","city":"${city}","country":"${country}","state":"${state}","zip":"${zip}","email":"${email}","phone":"${phone}","billingequalshipping":${billingequalshipping},
     "cnum":"${cnum}","month":"${month}","year":"${year}","cvv":"${cvv}","type":"${type}",
     "b_fname":"${b_fname}","b_sname":"${b_sname}","b_addy":"${b_addy}","b_apt":"${b_apt}","b_city":"${b_city}","b_country":"${b_country}","b_state":"${b_state}","b_zip":"${b_zip}"
   }`
-  if(billingequalshipping){
+  if (billingequalshipping) {
     config = `{"fname":"${fname}","sname":"${sname}","addy":"${addy}","apt":"${apt}","city":"${city}","country":"${country}","state":"${state}","zip":"${zip}","email":"${email}","phone":"${phone}","billingequalshipping":${billingequalshipping},
     "cnum":"${cnum}","month":"${month}","year":"${year}","cvv":"${cvv}","type":"${type}",
-    "b_fname":"${fname}","b_sname":"${sname}","b_addy":"${addy}","b_apt":"${apt}","b_city":"${city}","b_country":"${country}","b_state":"${state}","b_zip":"${zip}"
-  }`
+    "b_fname":"${fname}","b_sname":"${sname}","b_addy":"${addy}","b_apt":"${apt}","b_city":"${city}","b_country":"${country}","b_state":"${state}","b_zip":"${zip}"}`
   }
   //}
   console.log(config)
-  ipcRenderer.send('configSave', config);
+  ipcRenderer.send('configSave', config, profile_name);
+  loadProfileNames()
 }
 
-function backToProfiles(){
+function backToProfiles() {
   document.getElementById("settings").style.display = "block"
   document.getElementById("main").style.display = "block"
   document.getElementById('converter').style.display = 'none'
@@ -150,7 +258,7 @@ function toggleBilling() {
   }
 }
 
-function next_page(){
+function next_page() {
   document.getElementById("settings").style.display = "none"
   document.getElementById("main").style.display = "none"
   document.getElementById('converter').style.display = 'block'
@@ -159,31 +267,52 @@ function next_page(){
 }
 
 function pd() {
-  ipcRenderer.send('pd');
+  config_list = require('../config.json')
+  pname = document.getElementById('profiles_select').value
+  profile = config_list[pname]
+  ipcRenderer.send('pd',profile,pname);
 }
 
 function dashe() {
-  ipcRenderer.send('dashe');
+  config_list = require('../config.json')
+  pname = document.getElementById('profiles_select').value
+  profile = config_list[pname]
+  ipcRenderer.send('dashe',profile,pname);
 }
 
 function phantom() {
-  ipcRenderer.send('phantom');
+  config_list = require('../config.json')
+  pname = document.getElementById('profiles_select').value
+  profile = config_list[pname]
+  ipcRenderer.send('phantom',profile,pname);
 }
 
 function ghost() {
-  ipcRenderer.send('ghost');
+  config_list = require('../config.json')
+  pname = document.getElementById('profiles_select').value
+  profile = config_list[pname]
+  ipcRenderer.send('ghost',profile,pname);
 }
 
 function cyber() {
-  ipcRenderer.send('cyber');
+  config_list = require('../config.json')
+  pname = document.getElementById('profiles_select').value
+  profile = config_list[pname]
+  ipcRenderer.send('cyber',profile,pname);
 }
 
 function eve() {
-  ipcRenderer.send('eve');
+  config_list = require('../config.json')
+  pname = document.getElementById('profiles_select').value
+  profile = config_list[pname]
+  ipcRenderer.send('eve',profile,pname);
 }
 
 function hastey() {
-  ipcRenderer.send('hastey');
+  config_list = require('../config.json')
+  pname = document.getElementById('profiles_select').value
+  profile = config_list[pname]
+  ipcRenderer.send('hastey',profile,pname);
 }
 
 
