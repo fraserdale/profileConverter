@@ -262,8 +262,6 @@ function next_page() {
   document.getElementById("settings").style.display = "none"
   document.getElementById("main").style.display = "none"
   document.getElementById('converter').style.display = 'block'
-
-
 }
 
 function pd() {
@@ -315,27 +313,36 @@ function hastey() {
   ipcRenderer.send('hastey',profile,pname);
 }
 
-
-/* function start() {
-  //save()
-  document.getElementById('server').disabled = true
-  document.getElementById('private').disabled = true
-  document.getElementById('public').disabled = true
-  document.getElementById('bot').disabled = true
-  document.getElementById('quantityCart').disabled = true
-  document.getElementById('deleteAfterReact').disabled = true
-  document.getElementById('after10').disabled = true
-  document.getElementById('cooldown').disabled = true
-  ipcRenderer.send('start');
+function showConverter() {
+  console.log('showConverter')
+  document.getElementById('converter').style.display = 'block'
+  document.getElementById("accountGen_frame").style.display = "none"
+  document.getElementById("ghostGen_frame").style.display = "none"
+  document.getElementById("setting_container").style.display = "none"
 }
 
-function showSettings() {
-  var x = document.getElementById("settings");
-  if (x.style.display === "none") {
-    x.style.display = "block";
-  } else {
-    x.style.display = "none";
-  }
+function showGhostGen() {
+  console.log('showGhostGen')
+  document.getElementById('converter').style.display = 'none'
+  document.getElementById("accountGen_frame").style.display = "none"
+  document.getElementById("ghostGen_frame").style.display = "block"
+  document.getElementById("setting_container").style.display = "none"
 }
 
-ipcRenderer.send('checkVersion'); */
+function showProfiles() {
+  console.log('showProfiles')
+  document.getElementById('converter').style.display = 'none'
+  document.getElementById("accountGen_frame").style.display = "none"
+  document.getElementById("ghostGen_frame").style.display = "none"
+  document.getElementById("setting_container").style.display = "block"
+}
+
+function showAccountGen() {
+  console.log('showAccountGen')
+  document.getElementById('converter').style.display = 'none'
+  document.getElementById("accountGen_frame").style.display = "block"
+  document.getElementById("ghostGen_frame").style.display = "none"
+  document.getElementById("setting_container").style.display = "none"
+}
+
+showProfiles()

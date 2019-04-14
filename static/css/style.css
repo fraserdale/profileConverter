@@ -50,3 +50,7 @@ input[text]{
 .input-field > a{
     width: 200px
 }
+
+i{
+    cursor: pointer;
+}

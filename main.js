@@ -339,6 +339,9 @@ ipcMain.on('returnConfig', function (e) {
     mainWindow.webContents.send('returnedConfig', old_configs);
 });
 
+
+
+
 ipcMain.on('returnNames',function(e){
     old_configs = require('./config.json')   
     mainWindow.webContents.send('returnedNames', old_configs);
